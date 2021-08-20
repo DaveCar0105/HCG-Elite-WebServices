@@ -4,6 +4,7 @@ import { Workbook } from 'exceljs';
 import { environment } from 'src/environments/environment';
 import * as fs from 'file-saver';
 import { Observable } from 'rxjs';
+import { ProcesoMaritimo } from 'src/models/cliente';
 const headersOauth = {
   headers: new HttpHeaders()
     .append('Content-Type', 'application/json')
@@ -21,7 +22,10 @@ const headersOauth = {
       return this.http.post<any>(this.url + 'Sincro/Reporte', filtro, headersOauth);
     }
 
-    generarExcel(baseRamos:any[],baseCajas:any[],baseProblemas:any[],baseTotalRamos:any[],hidratacion:any[],empaque:any[],temperatura:any[],actividad:any[]){
+    generarExcel(baseRamos:any[],baseCajas:any[],baseProblemas:any[],baseTotalRamos:any[],hidratacion:any[],empaque:any[], 
+      temperatura:any[],actividad:any[], mari:any[],
+      circuloCalidadCausas:any[], circuloCalidadClientes:any[], circuloCalidadProductos:any[], circuloCalidadVariedad:any[], 
+      circuloCalidadNumeroMesa:any[], circuloCalidadLinea:any[]){
       let workbook = new Workbook();
 
       let worksheet = workbook.addWorksheet('BASE GENERAL Ramos', {
@@ -377,8 +381,58 @@ const headersOauth = {
           }
         }
       });
-      //Proceso Maritimo
-      let worksheetProcesoMaritimo = workbook.addWorksheet('PROCESO MARITIMO', {
+      
+      let cabeceraCirculoCalidadCausas = [
+        ["Semana","Mes","Fecha","Postcosecha","Número reunión","Causa", "Causa relacionada", "Indice", "% Distribución"]
+      ];
+      this.generacionPageReporteExcel(workbook, circuloCalidadCausas, cabeceraCirculoCalidadCausas,"CIRCULO CALIDAD CAUSAS");
+
+      let cabeceraCirculoCalidadClientes = [
+        ["Semana","Mes","Fecha","Postcosecha","Número reunión","Cliente", "Ramos revisados", "Ramos rechazados", "% No conformidad"]
+      ];
+      this.generacionPageReporteExcel(workbook, circuloCalidadClientes, cabeceraCirculoCalidadClientes,"CIRCULO CALIDAD CLIENTES");
+
+      let cabeceraCirculoCalidadProductos = [
+        ["Semana","Mes","Fecha","Postcosecha","Número reunión","Producto", "Ramos revisados", "Ramos rechazados", "% No conformidad"]
+      ];
+      this.generacionPageReporteExcel(workbook, circuloCalidadProductos, cabeceraCirculoCalidadProductos,"CIRCULO CALIDAD PRODUCTOS");
+
+      let cabeceraCirculoCalidadVariedad = [
+        ["Semana","Mes","Fecha","Postcosecha","Número reunión","Variedad", "Incidencia ramos", "% Incidencia"]
+      ];
+      this.generacionPageReporteExcel(workbook, circuloCalidadVariedad, cabeceraCirculoCalidadVariedad,"CIRCULO CALIDAD VARIEDAD");
+
+      let cabeceraCirculoCalidadLinea = [
+        ["Semana","Mes","Fecha","Postcosecha","Número reunión","Linea", "Incidencia ramos", "% Incidencia"]
+      ];
+      this.generacionPageReporteExcel(workbook, circuloCalidadLinea, cabeceraCirculoCalidadLinea,"CIRCULO CALIDAD LINEA");
+
+      let cabeceraCirculoCalidadNumeroMesa = [
+        ["Semana","Mes","Fecha","Postcosecha","Número reunión","Número de mesa", "Incidencia ramos", "% Incidencia"]
+      ];
+      this.generacionPageReporteExcel(workbook, circuloCalidadNumeroMesa, cabeceraCirculoCalidadNumeroMesa,"CIRCULO CALIDAD #MESA");
+
+
+      let cabeceraBaseGeneralRamosmARITIMO = [
+        ["Semana","Mes","Fecha","Postcosecha","Qc","Cliente", "Número guía", "Proceso", "Código ramos total", "Ramos Control", "Cumple", "No Cumple", "N/A"]
+      ];
+      this.generacionPageReporteExcel(workbook, mari, cabeceraBaseGeneralRamosmARITIMO,"PROCESO MARITIMO");
+
+      workbook.xlsx.writeBuffer().then((data) => {
+        this.saveAsExcelFile(data, 'ReporteAgencia');
+      })
+    }
+
+    saveAsExcelFile(buffer: any, fileName: string): void {
+      const data: Blob = new Blob([buffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      });
+      fs.saveAs(data, fileName + '_' + new Date().getTime() + '.xlsx');
+      
+    }
+
+    generacionPageReporteExcel(workbook: Workbook, arregloData: any[], arregloCabecera: any[], nombrePage: string){
+      let worksheet = workbook.addWorksheet(nombrePage, {
         views: [{ showGridLines: true }],
         pageSetup: { paperSize: 9, draft: false,scale: 60, margins: {
           left: 0, right: 0,
@@ -386,17 +440,11 @@ const headersOauth = {
           header: 0, footer: 0
         } }
       });
-      let cabeceraBaseGeneralRamosmARITIMO = [
-        ["Semana","Mes","Fecha","Macro cliente","Cliente","Post cosecha", "Producto", "No orden", "Marca", "Tipo de control ramos", "Tallos / ramo", "Total ramos a despachar", "Total ramos elaborados", "% Inspeccionado", "Total ramos revisados", "Total Ramos no conformes", "% No conformes", "Ramos Conformes", "Total tallos revisados", "% Conformidad", "Atendido por", "Qc", "Derrogación", "Derrogado por"]
-      ];
-
       
-      
-      cabeceraBaseGeneralRamosmARITIMO.forEach(c=>{
+      arregloCabecera.forEach(c=>{
         let row = worksheet.addRow(c);
         row.font ={ name: 'Calibri', family: 4, size: 9 ,bold:true ,color: {argb: 'FFFFFFFF'} };
         row.alignment = {horizontal:'center',vertical:'middle',wrapText: true};
-        
         for (var i = 1; i <= row.cellCount; i++) {
           row.getCell(i).border = {
             top: { style: 'thin' },
@@ -411,9 +459,8 @@ const headersOauth = {
           };
         }
       });
-      
       worksheet.getRow(1).height = 20;
-      baseRamos.forEach(br=>{
+      arregloData.forEach(br=>{
         let row = worksheet.addRow(br);
         row.font ={ name: 'Calibri', family: 4, size: 9  };
         row.alignment = {horizontal:'center',vertical:'middle',wrapText: true};
@@ -426,16 +473,5 @@ const headersOauth = {
           }
         }
       });
-      workbook.xlsx.writeBuffer().then((data) => {
-        this.saveAsExcelFile(data, 'ReporteAgencia');
-      })
-    }
-
-    saveAsExcelFile(buffer: any, fileName: string): void {
-      const data: Blob = new Blob([buffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-      fs.saveAs(data, fileName + '_' + new Date().getTime() + '.xlsx');
-      
     }
   }
