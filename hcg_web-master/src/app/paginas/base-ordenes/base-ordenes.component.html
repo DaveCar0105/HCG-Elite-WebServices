@@ -1,0 +1,61 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title >Base Ordenes</mat-card-title>
+        <input style="width: 80%; " type="file" #fileInput /> 
+
+        <mat-card-subtitle><button mat-raised-button (click)="uploadFile();">Subir</button></mat-card-subtitle>
+         
+    </mat-card-header>
+
+    <mat-table [dataSource]="allOrders" class="mat-elevation-z8">
+        <ng-container matColumnDef="prioridades">
+          <mat-header-cell *matHeaderCellDef> Prioridades </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.prioridades}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="nomBodega">
+            <mat-header-cell *matHeaderCellDef> NomBodega </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.nomBodega}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="postcosecha">
+            <mat-header-cell *matHeaderCellDef> Postcosecha </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.postcosecha}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="nomShip">
+            <mat-header-cell *matHeaderCellDef> NomShip </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.nomShip}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="nomShop">
+            <mat-header-cell *matHeaderCellDef> NomShop </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.nomShop}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="marca">
+            <mat-header-cell *matHeaderCellDef> Marca </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.marca}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="numPed">
+            <mat-header-cell *matHeaderCellDef> NumPed </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.numPed}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="pO">
+            <mat-header-cell *matHeaderCellDef> Po </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.pO}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="tipoDes">
+            <mat-header-cell *matHeaderCellDef> TipoDes </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.tipoDes}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.total}} </mat-cell>
+        </ng-container>
+        
+      
+    
+        
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    
+</mat-card>
+

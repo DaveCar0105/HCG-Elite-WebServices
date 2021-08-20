@@ -1,0 +1,26 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+  background: linear-gradient(rgb(0, 0, 0) 0%, rgb(255, 0, 0) 100%);
+  transform: none;
+  visibility: visible;
+  color: white;
+}
+.fondoTransparente
+{
+	background-color:white;
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}

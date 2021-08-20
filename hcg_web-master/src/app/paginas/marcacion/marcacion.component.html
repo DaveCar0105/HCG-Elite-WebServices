@@ -1,0 +1,28 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Marcaciones</mat-card-title>
+        <mat-card-subtitle><button mat-raised-button (click)="nuevo()">Nuevo</button></mat-card-subtitle>
+    </mat-card-header>
+    <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="marcacionNombre">
+          <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.marcacionNombre}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="clienteNombre">
+          <mat-header-cell *matHeaderCellDef> Nombre Cliente </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.cliente.clienteNombre}} </mat-cell>
+        </ng-container>
+      
+      
+    
+        <ng-container matColumnDef="marcacionId">
+          <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
+          <mat-cell *matCellDef="let element"><button mat-raised-button (click)="editar(element)">Editar</button></mat-cell>
+        </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+</mat-card>

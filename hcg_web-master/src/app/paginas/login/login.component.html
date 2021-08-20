@@ -1,0 +1,14 @@
+<div *ngIf="isLogin" class="login-page">
+    <div class="form">
+      <form class="login-form" [formGroup]="formGroup">
+          <input  placeholder="Usuario" formControlName="usuarioNombre" type="text" />
+          <input  placeholder="Contraseña" formControlName="usuarioContrasenia" type="password"/>
+          <label> Aplicacion: </label>
+          <select name="app" formControlName="app">
+            <option value="HCG">AGENCIA</option>
+            <option value="HCGCONTROL">FINCA</option>
+          </select>
+        <button (click)="login()">Entrar</button>
+      </form>
+    </div>
+  </div>
