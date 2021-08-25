@@ -26,6 +26,7 @@
     "generator-angular-material-crud": "^1.0.8",
     "html2canvas": "^1.0.0-rc.5",
     "jspdf": "^1.5.3",
+    "ngx-spinner": "^9.0.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

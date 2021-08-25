@@ -1,5 +1,4 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +11,9 @@ import { LoginComponent } from './paginas/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './paginas/login/auth.service';
 import { AuthGuard } from './paginas/login/auth.guard';
+import { NgModule } from '@angular/core';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 @NgModule({
   declarations: [
@@ -26,13 +28,15 @@ import { AuthGuard } from './paginas/login/auth.guard';
     Material,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule,
   ],
   providers: [
     DatePipe,
     AuthService,
     AuthGuard
   ],
+  schemas : [CUSTOM_ELEMENTS_SCHEMA] ,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

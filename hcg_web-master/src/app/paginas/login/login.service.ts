@@ -12,10 +12,7 @@ const headers = {
 export class LoginService {
     _url:string = environment.urlApi +'usuarios/login/';
     _urlColombia:string = environment.urlApiColombia + 'Usuarios/';
-  constructor(private http: HttpClient) { 
-
-
-  }
+  constructor(private http: HttpClient) { }
   
   getLogin(usuario:any) {
     if(usuario.app === "HCG"){

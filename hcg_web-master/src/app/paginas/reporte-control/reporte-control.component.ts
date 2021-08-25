@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { CirculoCalidadCausas, CirculoCalidadClientes, CirculoCalidadLinea, CirculoCalidadNumeroMesa, CirculoCalidadProductos, CirculoCalidadVariedad } from 'src/dto/circuloCalidad.dto';
 import { ProcesoMaritimo } from 'src/models/cliente';
 import { ReporteControlService } from './reporte-control.service';
@@ -10,10 +11,14 @@ import { ReporteControlService } from './reporte-control.service';
     styleUrls: ['./reporte-control.component.css']
   })
   export class ReporteControlComponent {
+    public spinnerName: string;
+    public spinnerType: string;
+
     fecha_desde;
     fecha_hasta;
     elite;
     baseRamos =[];
+    baseRamosBanda =[];
     baseCajas =[];
     baseProblemas =[];
     baseTotalRamos =[];
@@ -28,8 +33,11 @@ import { ReporteControlService } from './reporte-control.service';
     circuloCalidadLinea = [];
     circuloCalidadNumeroMesa = [];
     procesoMaritimo = [];
-    constructor(private _httpReporte:ReporteControlService){
+    constructor(private _httpReporte:ReporteControlService,private spinner: NgxSpinnerService){
+      this.spinnerName = "spinnerReporteFinca";
+      this.spinnerType = "square-spin";
     }
+
     addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
       this.fecha_desde = event.value;
     }
@@ -37,6 +45,7 @@ import { ReporteControlService } from './reporte-control.service';
       this.fecha_hasta = event.value;
     }
     generar(){
+      this.spinner.show(this.spinnerName);
       var parametros = {
         fecha_desde:this.fecha_desde,
         fecha_hasta:this.fecha_hasta,
@@ -44,6 +53,7 @@ import { ReporteControlService } from './reporte-control.service';
       };
       this._httpReporte.getReporte(parametros).subscribe(r=>{
         this.baseRamos =[];
+        this.baseRamosBanda =[];
         this.baseCajas =[];
         this.baseProblemas =[];
         this.baseTotalRamos =[];
@@ -59,6 +69,7 @@ import { ReporteControlService } from './reporte-control.service';
         this.circuloCalidadLinea = [];
         this.procesoMaritimo = [];
         let baseR = r.baseRamos;
+        let baseBanda = r.baseRamosBanda;
         let baseC = r.baseCajas;
         let baseP = r.problemasRamoEmpaque;
         let baseT = r.baseTotalRamos;
@@ -77,6 +88,9 @@ import { ReporteControlService } from './reporte-control.service';
 
         for(var i = 0 ;i<baseR.length; i++){
           this.baseRamos.push([baseR[i].semana,baseR[i].mes,baseR[i].fecha,baseR[i].clienteMacro,baseR[i].cliente,baseR[i].postCosecha,baseR[i].producto,baseR[i].ordenNo,baseR[i].marca,baseR[i].tipo,baseR[i].tallos,baseR[i].ramosDespachar,baseR[i].ramosElaborados,baseR[i].inspeccionado+'%',baseR[i].ramosRevisados,baseR[i].ramosNoConformes,baseR[i].porcentajeNoConformes+'%',baseR[i].ramosConformes,baseR[i].tallosRevisados,baseR[i].porcentajeConformidad+'%',baseR[i].atendidoPor,baseR[i].qc,baseR[i].derrogacion?'SI':'NO',baseR[i].derrogadoPor]);
+        };
+        for(var i = 0 ;i<baseBanda.length; i++){
+          this.baseRamosBanda.push([baseBanda[i].semana,baseBanda[i].mes,baseBanda[i].fecha,baseBanda[i].clienteMacro,baseBanda[i].cliente,baseBanda[i].postCosecha,baseBanda[i].producto,baseBanda[i].ordenNo,baseBanda[i].marca,baseBanda[i].tipo,baseBanda[i].tallos,baseBanda[i].ramosDespachar,baseBanda[i].ramosElaborados,baseBanda[i].inspeccionado+'%',baseBanda[i].ramosRevisados,baseBanda[i].ramosNoConformes,baseBanda[i].porcentajeNoConformes+'%',baseBanda[i].ramosConformes,baseBanda[i].tallosRevisados,baseBanda[i].porcentajeConformidad+'%',baseBanda[i].atendidoPor,baseBanda[i].qc,baseBanda[i].derrogacion?'SI':'NO',baseBanda[i].derrogadoPor]);
         };
         for(var i = 0 ;i<baseC.length; i++){
           this.baseCajas.push([baseC[i].semana,baseC[i].mes,baseC[i].fecha,baseC[i].clienteMacro,baseC[i].cliente,baseC[i].postCosecha,baseC[i].producto,baseC[i].ordenNo,baseC[i].marca,baseC[i].ramosCaja,baseC[i].tallosRamo,baseC[i].cajasDespachar,baseC[i].inspeccionado+'%',baseC[i].cajasRevisadas,baseC[i].cajasNoConformes,baseC[i].porcentajeNoConformes+'%',baseC[i].Qc]);
@@ -137,12 +151,14 @@ import { ReporteControlService } from './reporte-control.service';
             [pro.semana,pro.mes, pro.fecha, pro.postCosecha, pro.numeroReunion, pro.numeroMesa, pro.incidenciaRamos,pro.porcentajeIncidencia]
           )
         });
-
-        this._httpReporte.generarExcel(this.baseRamos,this.baseCajas,this.baseProblemas,this.baseTotalRamos,this.hidratacion,
+        this.spinner.hide(this.spinnerName);
+        this._httpReporte.generarExcel(this.baseRamos,this.baseRamosBanda, this.baseCajas,this.baseProblemas,this.baseTotalRamos,this.hidratacion,
           this.empaque,this.temperatura,this.actividad, this.procesoMaritimo,
           this.circuloCalidadCausas, this.circuloCalidadClientes, this.circuloCalidadProductos,this.circuloCalidadVariedad, this.circuloCalidadNumeroMesa, this.circuloCalidadLinea
         );
-      });
+      },
+       err=> this.spinner.hide(this.spinnerName)
+      );
     }
 
   }

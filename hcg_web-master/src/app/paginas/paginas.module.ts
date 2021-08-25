@@ -13,6 +13,8 @@ import { MarcacionDialogComponent, MarcacionComponent } from './marcacion/marcac
 import { UsuarioComponent, UsuarioDialogComponent } from './usuario/usuario.component';
 import { BaseOrdenesComponent } from './base-ordenes/base-ordenes.component';
 import { ReporteControlComponent } from './reporte-control/reporte-control.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 @NgModule({
   declarations: [
     ...routedComponents,
@@ -47,8 +49,10 @@ import { ReporteControlComponent } from './reporte-control/reporte-control.compo
     CommonModule,
     Material,
     FormsModule,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    NgxSpinnerModule
+  ],
+  schemas : [CUSTOM_ELEMENTS_SCHEMA] ,
 })
 export class PaginasModule { }
 

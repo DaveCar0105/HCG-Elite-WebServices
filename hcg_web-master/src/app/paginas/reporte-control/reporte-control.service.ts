@@ -22,7 +22,7 @@ const headersOauth = {
       return this.http.post<any>(this.url + 'Sincro/Reporte', filtro, headersOauth);
     }
 
-    generarExcel(baseRamos:any[],baseCajas:any[],baseProblemas:any[],baseTotalRamos:any[],hidratacion:any[],empaque:any[], 
+    generarExcel(baseRamos:any[],baseRamosBanda:any[],baseCajas:any[],baseProblemas:any[],baseTotalRamos:any[],hidratacion:any[],empaque:any[], 
       temperatura:any[],actividad:any[], mari:any[],
       circuloCalidadCausas:any[], circuloCalidadClientes:any[], circuloCalidadProductos:any[], circuloCalidadVariedad:any[], 
       circuloCalidadNumeroMesa:any[], circuloCalidadLinea:any[]){
@@ -76,6 +76,8 @@ const headersOauth = {
           }
         }
       });
+
+      this.generacionPageReporteExcel(workbook, baseRamosBanda, cabeceraBaseGeneralRamos,"Base Ramos Banda");
 
       let worksheet1 = workbook.addWorksheet('BASE GENERAL cajas emp', {
         views: [{ showGridLines: true }],

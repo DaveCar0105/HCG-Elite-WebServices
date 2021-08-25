@@ -8,38 +8,54 @@
     <mat-nav-list style="background-color: white" *ngIf="isAgencia">
       <a mat-list-item routerLink="paginas/reportes_agencia">Reportes Agencia</a>
     </mat-nav-list>
-    <mat-nav-list style="background-color: white" *ngIf="!isAgencia">
-      <a mat-list-item routerLink="paginas/reportes_control">Reportes Contol</a>
-    </mat-nav-list>
-    <br>
-    <mat-nav-list style="background-color: white" *ngIf="!isAgencia">
-      <a mat-list-item routerLink="paginas/baseOrdenes">Base Ordenes</a>
-    </mat-nav-list>
-    <br>
-    <mat-nav-list style="background-color: white" *ngIf="isAgencia">
-      <a mat-list-item routerLink="paginas/cliente">Clientes</a>
-    </mat-nav-list>
-    <br>
-    <mat-nav-list style="background-color: white" *ngIf="isAgencia">
-      <a mat-list-item routerLink="paginas/marcacion">Marcaciones</a>
-    </mat-nav-list>
-    <br>
-    <mat-nav-list style="background-color: white" *ngIf="isAgencia">
-      <a mat-list-item routerLink="paginas/finca">Fincas</a>
-    </mat-nav-list>
-    <br>
-    <mat-nav-list style="background-color: white" *ngIf="isAgencia">
-      <a mat-list-item routerLink="paginas/agencia">Agencias</a>
-    </mat-nav-list>
-    <br>
-    <mat-nav-list style="background-color: white" *ngIf="isAdmin && isAgencia">
-      <a mat-list-item routerLink="paginas/usuario">Usuarios</a>
-    </mat-nav-list>
-    <br>
+    <div *ngIf="!isAgencia">
+      <mat-nav-list style="background-color: white" >
+        <a mat-list-item routerLink="paginas/reportes_control">Reportes Contol</a>
+      </mat-nav-list>
+      <br>
+    </div>
+    <div *ngIf="!isAgencia">
+      <mat-nav-list style="background-color: white" >
+        <a mat-list-item routerLink="paginas/baseOrdenes">Base Ordenes</a>
+      </mat-nav-list>
+      <br>
+    </div>
+    <div *ngIf="isAgencia">
+      <mat-nav-list style="background-color: white" >
+        <a mat-list-item routerLink="paginas/cliente">Clientes</a>
+      </mat-nav-list>
+      <br>
+    </div>
+    <div *ngIf="isAgencia">
+      <mat-nav-list style="background-color: white" >
+        <a mat-list-item routerLink="paginas/marcacion">Marcaciones</a>
+      </mat-nav-list>
+      <br>
+    </div>
+    <div *ngIf="isAgencia">
+      <mat-nav-list style="background-color: white" >
+        <a mat-list-item routerLink="paginas/finca">Fincas</a>
+      </mat-nav-list>
+      <br>
+    </div>
+    <div *ngIf="isAgencia">
+      <mat-nav-list style="background-color: white" >
+        <a mat-list-item routerLink="paginas/agencia">Agencias</a>
+      </mat-nav-list>
+      <br>
+    </div>
+    <div *ngIf="isAdmin && isAgencia">
+      <mat-nav-list style="background-color: white" >
+        <a mat-list-item routerLink="paginas/usuario">Usuarios</a>
+      </mat-nav-list>
+      <br>
+    </div>
     <mat-nav-list style="background-color: white" *ngIf="isAgencia">
       <a mat-list-item routerLink="paginas/variedad">Variedades</a>
     </mat-nav-list>
-    
+    <mat-nav-list style="background-color: white">
+      <a mat-list-item (click)="logOut($event)">Salir</a>
+    </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar *ngIf="isLogin | async" color="primary" style="background-color: black; color: white">
@@ -52,6 +68,8 @@
       </button>
       <span>High Control Group</span>
     </mat-toolbar>
-    <router-outlet></router-outlet>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

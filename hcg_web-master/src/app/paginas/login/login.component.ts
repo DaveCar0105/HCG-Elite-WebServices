@@ -5,6 +5,7 @@ import { LoginService} from './login.service'
 import { AuthService } from './auth.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
   @Component({
     selector: 'app-login',
@@ -14,14 +15,20 @@ import { Router } from '@angular/router';
   export class LoginComponent {
     public formGroup: FormGroup;
     isLogin: Observable<boolean>;
-    constructor(private router: Router, private formBuilder: FormBuilder,private httpLogin:LoginService,private authService:AuthService ) { 
+    public spinnerName: string;
+    public spinnerType: string;
+
+    constructor(private router: Router, private formBuilder: FormBuilder,private httpLogin:LoginService,private authService:AuthService,
+      private spinner: NgxSpinnerService ) { 
       this.isLogin = new BehaviorSubject<boolean>(false);
       this.authService.isLoggedIn.subscribe(c => {
-      
       });
   }
 
   public ngOnInit() {
+    this.spinnerName = "spinnerLogin";
+    //this.spinnerType = "square-spin";
+    this.spinnerType = "ball-triangle-path";
     if (localStorage.getItem('codigo')) {
       this.router.navigate(['/']);
     }
@@ -36,27 +43,31 @@ import { Router } from '@angular/router';
   }
 
   login(){
-    console.log(this.formGroup.value.app);
-    
+    this.spinner.show(this.spinnerName);
     this.httpLogin.getLogin(this.formGroup.value).subscribe(
       c=>{
-        if(this.formGroup.value.app === 'HCG' ){
-          localStorage.setItem('codigo',c.codigo);
-          localStorage.setItem('tipo','HCG');
+        if (c!=null && c>0){
+          if(this.formGroup.value.app === 'HCG' ){
+            localStorage.setItem('codigo',c.codigo);
+            localStorage.setItem('tipo','HCG');
+          }
+          else{
+            localStorage.setItem('codigo',c);
+            localStorage.setItem('tipo','HCGCONTROL');
+          }
+          this.spinner.hide(this.spinnerName);
+          window.location.reload();
+          this.authService.loginInicial();
+        } else {
+          alert("Credenciales incorrectas!!!");
+          this.spinner.hide(this.spinnerName);
         }
-        else{
-          localStorage.setItem('codigo',c);
-          localStorage.setItem('tipo','HCGCONTROL');
-        }
-        
-        window.location.reload();
-        this.authService.loginInicial();
       },
       error=>{
+        alert("Vuelva ingresar sus credenciales!!!");
+        this.spinner.hide(this.spinnerName);
         console.error(error);
-        
       }
-      
     );
   }
 }

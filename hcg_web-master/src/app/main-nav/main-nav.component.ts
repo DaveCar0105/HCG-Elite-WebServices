@@ -35,8 +35,12 @@ export class MainNavComponent implements OnInit{
       this.isAgencia = false;
     }
 
+  }
 
-
+  logOut(event: Event) {
+    event.preventDefault();
+    this.authService.logout();
+    event.stopImmediatePropagation();
   }
 
 }

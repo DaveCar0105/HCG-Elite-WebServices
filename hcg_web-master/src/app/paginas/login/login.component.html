@@ -1,5 +1,9 @@
+<ngx-spinner [name]="spinnerName" [type]="spinnerType"><p style = "color: white" > Logeandose ... </p></ngx-spinner>
 <div *ngIf="isLogin" class="login-page">
     <div class="form">
+      <div class="container">
+        <img width="100%" src="/assets/img/logo.png" alt="logo" srcset="">
+      </div>
       <form class="login-form" [formGroup]="formGroup">
           <input  placeholder="Usuario" formControlName="usuarioNombre" type="text" />
           <input  placeholder="Contraseña" formControlName="usuarioContrasenia" type="password"/>

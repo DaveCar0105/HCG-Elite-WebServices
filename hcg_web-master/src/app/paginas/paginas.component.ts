@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-paginas',
@@ -8,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PaginasComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    ) { }
 
   ngOnInit() {
   }

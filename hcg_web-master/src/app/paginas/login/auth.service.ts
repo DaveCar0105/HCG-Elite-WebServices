@@ -22,13 +22,14 @@ export class AuthService {
   loginInicial(){
     if (localStorage.getItem("codigo")) { // {3}
       this.loggedIn.next(true);
-      this.router.navigate(['/paginas']);
+      this.router.navigate(['/']);
     }
   }
 
-  logout() {                            // {4}
+  logout() {
     this.loggedIn.next(false);
     localStorage.clear();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
+    window.location.reload();
   }
 }

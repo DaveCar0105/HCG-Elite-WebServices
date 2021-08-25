@@ -8,7 +8,7 @@ const routes: Routes = [
   {path:'paginas',loadChildren:'./paginas/paginas.module#PaginasModule',canActivate:[AuthGuard]},
   {path:'login',component:LoginComponent},
   { path: '', redirectTo: 'paginas', pathMatch: 'full' },
-  { path: '**', redirectTo: 'paginas' },
+  { path: '**', redirectTo: '/' },
 ];
 
 @NgModule({
